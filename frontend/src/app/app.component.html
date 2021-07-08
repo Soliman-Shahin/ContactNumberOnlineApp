@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="app-title">Contact Number Online App</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-1 col-md-3">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Add Contact</div>
+            <div class="panel-body">
+
+                <form autocomplete="off" [formGroup]="contactForm">
+                    <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && _fc.name.errors }">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" formControlName="name" placeholder="Contact Name">
+                        <span *ngIf="isSubmitted && _fc.name.errors" class="help-block">Name is required!</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && _fc.phone.errors }">
+                        <label for="name">Phone:</label>
+                        <input type="text" class="form-control" id="phone" formControlName="phone" placeholder="Contact Phone">
+                        <span *ngIf="isSubmitted && _fc.phone.errors" class="help-block">phone is required!</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && _fc.address.errors }">
+                        <label for="name">Address:</label>
+                        <input type="text" class="form-control" id="address" formControlName="address" placeholder="Contact Address">
+                        <span *ngIf="isSubmitted && _fc.address.errors" class="help-block">address is required!</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{ 'has-error': isSubmitted && _fc.notes.errors }">
+                        <label for="name">Notes:</label>
+                        <input type="text" class="form-control" id="notes" formControlName="notes" placeholder="Contact Notes">
+                        <span *ngIf="isSubmitted && _fc.notes.errors" class="help-block">notes is required!</span>
+                    </div>
+                    <button type="button" class="btn btn-success" (click)="save()"> {{ !contactForm.get('_id').value ? 'Create' : 'Update' }} <i class="fa fa-save"></i> </button>
+                    <button type="button" class="btn btn-danger" (click)="reset()">Reset <i class="fa fa-magic"></i> </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-7">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Contact List</div>
+            <div class="panel-body">
+
+                <table style="width:100%">
+                    <thead>
+                        <tr>
+                            <th (click)="sort('name')">Name&nbsp; <i class="fa fa-sort"></i> </th>
+                            <th (click)="sort('phone')">Phone&nbsp; <i class="fa fa-sort"></i> </th>
+                            <th (click)="sort('address')">Address&nbsp; <i class="fa fa-sort"></i> </th>
+                            <th (click)="sort('notes')">Notes&nbsp; <i class="fa fa-sort"></i> </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let contact of contactList | orderBy: key: reverse | paginate: { itemsPerPage: 5, currentPage: page}">
+                            <td>{{ contact.name }}</td>
+                            <td>{{ contact.phone }}</td>
+                            <td>{{ contact.address }}</td>
+                            <td>{{ contact.notes }}</td>
+                            <td>
+                                <button (click)="edit(contact._id)" class="btn btn-sm btn-primary" [disabled]="contact.isReading">
+                <span>Edit <i class="fa fa-edit"></i> </span>
+              </button>
+                                <button (click)="delete(contact._id)" class="btn btn-sm btn-danger" [disabled]="contact.isDeleting">
+                <span>Delete <i class="fa fa-trash-alt"></i> </span>
+              </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <pagination-controls class="text-center" (pageChange)="page = $event"></pagination-controls>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
